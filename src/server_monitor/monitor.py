@@ -8,10 +8,13 @@ import csv
 from datetime import datetime
 
 # 配置
+LOG_DIR = 'data'
 LOG_FILE = 'data/server_logs.csv'
 INTERVAL = 60
 
 def write_header():
+    if not os.path.exists(LOG_DIR):
+        os.makedirs(LOG_DIR)
     if not os.path.exists(LOG_FILE):
         with open(LOG_FILE, 'w', newline='') as f:
             writer = csv.writer(f)
