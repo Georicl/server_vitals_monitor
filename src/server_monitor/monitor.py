@@ -16,7 +16,7 @@ def write_header():
         with open(LOG_FILE, 'w', newline='') as f:
             writer = csv.writer(f)
             writer.writerow(['timestamp', 'cpu_percent', 'memory_percent', 'memory_used_gb'])
-            print(f"[{datetime.now()}] 初始化日志文件: {LOG_FILE}")
+            print(f"[{datetime.now()}] init log file: {LOG_FILE}")
 
 def log_metrics():
     try:
@@ -35,13 +35,12 @@ def log_metrics():
             writer = csv.writer(f)
             writer.writerow([now, cpu_pct, mem_pct, mem_used_gb])
 
-        print(f"[{now}] CPU使用率: {cpu_pct}% | 内存使用率: {mem_pct}% | 内存使用量: {mem_used_gb}GB")
+        print(f"[{now}] CPU: {cpu_pct}% | 内存使用率: {mem_pct}% | 内存使用量: {mem_used_gb}GB")
 
     except Exception as e:
         print(f"Error logging metrics: {e}")
 
 def signal_handler(sig, frame):
-    """优雅处理退出信号 (Ctrl+C)"""
     print("\n监控已停止。")
     sys.exit(0)
 
