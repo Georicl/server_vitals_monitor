@@ -5,8 +5,8 @@ import subprocess
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.abspath(os.path.join(CURRENT_DIR, "../../")) 
-SCRIPT_PATH = os.path.join(PROJECT_ROOT, "src", "server_monitor", "monitor.py")
-
+SCRIPT_NAME = os.path.join(PROJECT_ROOT, "src", "server_monitor", "monitor.py")
+SERVICE_NAME = "vitals_monitor.service"
 def get_path():
     user_home = os.path.expanduser("~")
     # 生成用户级配置
