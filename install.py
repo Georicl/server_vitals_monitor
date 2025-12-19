@@ -19,6 +19,7 @@ def run_installer(script_name):
     try:
         subprocess.run([sys.executable, script_path], check=True, env=env)
         print("-" * 40)
+        return True
     except subprocess.CalledProcessError as e:
         print(f"Error: {e}")
         return False
