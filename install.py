@@ -27,10 +27,12 @@ def main():
     print("=== Server Vitals Monitor Starter===")
     
     # 安装监控服务
+    print("Installing Monitor Service...")
     if not run_installer("install_monitor.py"):
         sys.exit(1)
         
     # 安装绘图定时任务
+    print("Installing Plotter Service...")
     if not run_installer("install_plotter.py"):
         sys.exit(1)
         
