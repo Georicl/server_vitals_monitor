@@ -3,8 +3,9 @@ import sys
 import getpass
 import subprocess
 
-SERVICE_NAME = "vitals_monitor.service"
-SCRIPT_NAME = "src/server_monitor/monitor.py"
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.abspath(os.path.join(CURRENT_DIR, "../../")) 
+SCRIPT_PATH = os.path.join(PROJECT_ROOT, "src", "server_monitor", "monitor.py")
 
 def get_path():
     user_home = os.path.expanduser("~")
