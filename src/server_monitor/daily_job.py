@@ -1,9 +1,7 @@
 import argparse
 import os
 import sys
-from datetime import datetime, timedelta
-from server_monitor.plot_daily import plot_logs 
-from server_monitor.reporter import send_daily_report 
+from datetime import datetime, timedelta 
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.abspath(os.path.join(CURRENT_DIR, "../../"))
@@ -11,6 +9,8 @@ PROJECT_ROOT = os.path.abspath(os.path.join(CURRENT_DIR, "../../"))
 if os.path.join(PROJECT_ROOT, "src") not in sys.path:
     sys.path.append(os.path.join(PROJECT_ROOT, "src"))
 
+from server_monitor.plot_daily import plot_logs  # noqa: E402
+from server_monitor.reporter import send_daily_report  # noqa: E402 
 
 DATA_DIR = os.path.join(PROJECT_ROOT, 'data')
 
