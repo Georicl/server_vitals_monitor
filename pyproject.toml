@@ -12,10 +12,9 @@ dev = [
 ]
 
 [tool.commitizen]
-name = "cz_conventional"
+name = "cz_conventional_commits"
 version = "1.0.0"
-tag_format = "v$version"
+tag_format = "$version"
 version_files = [
     "pyproject.toml:version",
-    "src/server_monitor/__init__.py:__version__" # 如果你有这个文件
 ]

@@ -189,3 +189,5 @@ server-vitals-monitor/
 │       └── install_cli.py   # CLI Installer / 命令行安装器
 └── install.py               # Main Installer / 主安装入口
 ```
+
+# 如果你喜欢这个项目，请将使用中遇到的问题联系我!
