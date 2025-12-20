@@ -26,7 +26,7 @@ def get_top_processes(n=3):
 def send_daily_report(date_str, attachment_path=None):
     config = load_config()
 
-    if not get_config_value(config, "email", "enable", False):
+    if not get_config_value(config, "email", "enabled", False):
         return
     
     email_cfg = config.get("email", {})
@@ -89,7 +89,6 @@ CPU 使用率: {cpu_now}%
         print(f"无附件，将发送纯文字邮件")
 
     try:
-        # 大多数现代邮箱 (Gmail/Outlook) 使用 STARTTLS (端口 587)
         with smtplib.SMTP(smtp_server, smtp_port) as server:
             server.starttls() 
             server.login(sender, password)
