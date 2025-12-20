@@ -1,8 +1,8 @@
 # Server Vitals Monitor (服务器生命体征监控)
 
-**Server Vitals Monitor** is a lightweight and automated system monitoring tool designed for Linux servers. It records resource usage (CPU & Memory) in real-time, generates visual daily reports, and sends email notifications with snapshots of high-load processes.
+**Server Vitals Monitor** is a automated system monitoring and task notification tool designed for Linux servers (especially for Bioinformatics). It not only tracks system resources (CPU/Memory) in real-time but also monitors long-running tasks and sends email notifications upon completion.
 
-**Server Vitals Monitor** 是一个轻量且自动化的 Linux 服务器监控工具。它能实时记录资源使用情况（CPU 和内存），生成可视化的每日报表，并发送包含高负载进程快照的邮件通知。
+**Server Vitals Monitor** 是一个专为 Linux 服务器（特别是生物信息学环境）设计的自动化的系统监控与任务通知工具。它不仅能实时追踪系统资源（CPU/内存），还能监控长时间运行的任务，并在任务结束时发送邮件通知。
 
 ---
 
@@ -19,8 +19,9 @@
 * **Dual Mode Support**: Supports both modern Systemd (recommended) and traditional Crontab (for restricted environments) deployment.
     * **双模式支持**：支持现代 Systemd（推荐）和传统 Crontab（适用于受限环境）部署。
 * **Privacy First**: Configuration is separated via `config.toml`, keeping sensitive credentials safe.
-    * **隐私优先**：通过 `config.toml` 分离配置，保护敏感凭证安全。
-
+    * **隐私优先**：通过 `config.toml` 分离配置，保护敏感凭证安全。  
+* **Task Guard**: Wraps around any shell command, monitors its execution time and exit status, and emails you when it finishes.  
+    **守护任务**: 可以包裹任意 Shell 命令，监控其运行时间和退出状态，并在结束后发送邮件通知。  
 ---
 
 ## 🛠 Prerequisites (依赖与要求)
@@ -83,7 +84,23 @@ receiver_email = "admin@example.com"
 Run the one-click installation script. It attempts to set up a User-level Systemd Service. 运行一键安装脚本。它会尝试设置用户级Systemd 服务。  
 ```bash  
 python3 install.py  
-```
+```  
+
+## 4. Acitvate Task Guard CLI
+The installer adds `~/bin` to your `$PATH`. You must restart your terminal or source your config to make `task_guard` available. 安装程序会自动将 `~/bin` 添加到你的 `$PATH`。你必须重启终端或 source 你的配置文件，才能让 `task_guard` 命令生效。  
+```bash
+source ~/.zshrc
+# OR / 或
+source ~/.bashrc
+```  
+
+# Usage: Task Guard
+Use `task_guard` to run long tasks. You will receive an email with the Status (Success/Fail), Duration, and Exit Code when it finishes. 使用 `task_guard` 来运行长任务。任务结束时，你将收到一封包含状态（成功/失败）、耗时和退出码的邮件。  
+
+```bash
+nohup task_guard "command" &
+```  
+
 
 # ⚠️ Troubleshooting: If Systemd Fails (故障排查)
 
@@ -156,17 +173,19 @@ crontab -e
 
 ```PlainText
 server-vitals-monitor/
-├── config.toml              # [Ignored] Local configuration / 本地配置文件 (不上传)
-├── config.example.toml      # Configuration template / 配置模板
-├── data/                    # Logs and Reports storage / 日志和报表存储
-│   ├── server_logs_YYYY-MM-DD.csv
-│   └── report_YYYY-MM-DD.pdf
+├── config.toml              # [Private] Local config / 本地配置
+├── config.example.toml      # Config template / 配置模板
+├── data/                    # Logs & Reports / 数据存储
 ├── src/
-│   ├── server_monitor/      # Core logic / 核心逻辑
-│   │   ├── monitor.py       # Data collector / 数据采集
-│   │   ├── daily_job.py     # Task entry / 任务入口
-│   │   ├── reporter.py      # Email sender / 邮件发送
-│   │   └── plot_daily.py    # Visualization / 绘图
-│   └── install_scripts/     # Deployment scripts / 部署脚本
-└── install.py               # Main installer / 主安装入口
+│   ├── server_monitor/
+│   │   ├── monitor.py       # Resource Logger / 资源记录器
+│   │   ├── daily_job.py     # Daily Scheduler Entry / 日报入口
+│   │   ├── plot_daily.py    # Plotting Logic / 绘图逻辑
+│   │   ├── reporter.py      # Email Logic / 邮件发送核心
+│   │   └── task_guard.py    # Task Monitor / 任务守卫核心
+│   └── install_scripts/
+│       ├── install_monitor.py
+│       ├── install_plotter.py
+│       └── install_cli.py   # CLI Installer / 命令行安装器
+└── install.py               # Main Installer / 主安装入口
 ```
