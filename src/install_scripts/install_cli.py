@@ -51,5 +51,48 @@ exec "{python_exe}" "{target_script}" "$@"
         print(f"Error: {e}")
         return False
     
+def add_path_to_shell_config(bin_dir):
+    home = os.path.expanduser("~")
+    shell = os.environ.get("SHELL", "")
+    config_file = None
+
+    # Check for zsh or bash
+    if "zsh" in shell:
+        config_file = os.path.join(home, ".zshrc")
+    elif "bash" in shell:
+        bashrc = os.path.join(home, ".bashrc")
+        bash_profile = os.path.join(home, ".bash_profile")
+        if os.path.exists(bashrc):
+            config_file = bashrc
+        elif os.path.exists(bash_profile):
+            config_file = bash_profile
+        else:
+            config_file = bashrc
+    else:
+        print(f"can not identify ({shell}) skip to add PATH。")
+        return False, None
+
+    export_line = f'export PATH="{bin_dir}:$PATH"'
+
+    # check file exists
+    content = ""
+    if os.path.exists(config_file):
+        with open(config_file, "r") as f:
+            content = f.read()
+
+    if bin_dir in content:
+        print(f"{bin_dir} had in {config_file}")
+        return True, config_file
+    
+    # add PATH
+    try:
+        with open(config_file, "a") as f:
+            f.write(f"\n# Added by Server Vitals Monitor\n{export_line}\n")
+        print(f"add PATH to: {config_file}")
+        return True, config_file
+    except Exception as e:
+        print(f"error: {e}")
+        return False, config_file
+
 if __name__ == "__main__":
     install_cli_tool()

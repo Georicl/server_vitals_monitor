@@ -9,8 +9,8 @@ wheels/
 # Virtual environments
 .venv
 
-server_logs.csv
 *.DS_Store
 __pycache__/
 .Rhistory
 config.json
+data/
