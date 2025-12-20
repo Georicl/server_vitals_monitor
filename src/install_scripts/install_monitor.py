@@ -1,12 +1,14 @@
-import os 
+import os
 import sys
 import getpass
 import subprocess
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.abspath(os.path.join(CURRENT_DIR, "../../")) 
+PROJECT_ROOT = os.path.abspath(os.path.join(CURRENT_DIR, "../../"))
 SCRIPT_NAME = os.path.join(PROJECT_ROOT, "src", "server_monitor", "monitor.py")
 SERVICE_NAME = "vitals_monitor.service"
+
+
 def get_path():
     user_home = os.path.expanduser("~")
     # 生成用户级配置
@@ -14,7 +16,7 @@ def get_path():
 
     project_dir = os.getcwd()
     # 获取python版本
-    python_path = sys.executable 
+    python_path = sys.executable
     script_path = os.path.join(project_dir, SCRIPT_NAME)
 
     return {
@@ -24,8 +26,9 @@ def get_path():
         "script_path": script_path,
         "systemd_dir": systemd_user_dir,
         "project_dir": project_dir,
-        "server_file_path": os.path.join(systemd_user_dir, SERVICE_NAME)
+        "server_file_path": os.path.join(systemd_user_dir, SERVICE_NAME),
     }
+
 
 def check_enviroment(paths):
     if not os.path.exists(paths["script_path"]):
@@ -43,8 +46,8 @@ After=network.target
 
 [Service]
 Type=simple
-WorkingDirectory={paths['project_dir']}
-ExecStart={paths['python_path']} -u {SCRIPT_NAME}
+WorkingDirectory={paths["project_dir"]}
+ExecStart={paths["python_path"]} -u {SCRIPT_NAME}
 Restart=on-failure
 RestartSec=10
 # 输出重定向
@@ -55,14 +58,14 @@ WantedBy=default.target
 """
     return content
 
-def install_service():
 
+def install_service():
     print(" === Now you are installing Server Vitals Monitor === \n")
 
     paths = get_path()
     check_enviroment(paths)
 
-    print(f"Now printing config info:\n")
+    print("Now printing config info:\n")
     print(f"You will install this service in user: {paths['user']}")
     print(f"Project path: {paths['project_dir']}")
     print(f"The final file will install in path: {paths['server_file_path']}")
@@ -71,7 +74,7 @@ def install_service():
     content = generate_server_file(paths)
     with open(paths["server_file_path"], "w") as f:
         f.write(content)
-    
+
     print("Service file generated done.")
 
     # 配置linger服务
@@ -82,7 +85,6 @@ def install_service():
     except subprocess.CalledProcessError as e:
         print(f"Fail to enable linger: {e}")
 
-    
     # 启动服务
     print("Starting service...")
     try:
@@ -95,6 +97,7 @@ def install_service():
         subprocess.run(["systemctl", "--user", "status", SERVICE_NAME, "--no-pager"])
     except subprocess.CalledProcessError as e:
         print(f"Fail to start service: {e}")
+
 
 if __name__ == "__main__":
     install_service()
