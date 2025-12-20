@@ -1,8 +1,8 @@
 # Server Vitals Monitor (服务器生命体征监控)
 
-**Server Vitals Monitor** is a lightweight, robust, and automated system monitoring tool designed for Linux servers. It records resource usage (CPU & Memory) in real-time, generates visual daily reports, and sends email notifications with snapshots of high-load processes.
+**Server Vitals Monitor** is a lightweight and automated system monitoring tool designed for Linux servers. It records resource usage (CPU & Memory) in real-time, generates visual daily reports, and sends email notifications with snapshots of high-load processes.
 
-**Server Vitals Monitor** 是一个轻量、健壮且自动化的 Linux 服务器监控工具。它能实时记录资源使用情况（CPU 和内存），生成可视化的每日报表，并发送包含高负载进程快照的邮件通知。
+**Server Vitals Monitor** 是一个轻量且自动化的 Linux 服务器监控工具。它能实时记录资源使用情况（CPU 和内存），生成可视化的每日报表，并发送包含高负载进程快照的邮件通知。
 
 ---
 
@@ -87,7 +87,7 @@ python3 install.py
 
 # ⚠️ Troubleshooting: If Systemd Fails (故障排查)
 
-n some environments (e.g., Docker containers, HPC clusters, or old CentOS 7 systems), systemd --user might fail due to permission issues (cgroups error). 在某些环境（如 Docker 容器、HPC 集群或旧版 CentOS 7）中，`systemd --user` 可能会因为权限问题（cgroups 错误）而无法运行。  
+n some environments (e.g., Docker containers, HPC clusters, or other old systems), systemd --user might fail due to permission issues (cgroups error). 在某些环境（如 Docker 容器、HPC 集群或旧版系统）中，`systemd --user` 可能会因为权限问题（cgroups 错误）而无法运行。  
 
 ## Solution: Use Nohup + Crontab
 
