@@ -1,7 +1,6 @@
 import sys
 import os
 import subprocess
-import time
 import argparse
 from datetime import datetime
 from server_monitor.reporter import send_email_core 
@@ -39,13 +38,13 @@ def finish_notice(command, exit_code, start_time, end_time, stdout_tail=None, st
     if stderr_tail:
         body += f"\n错误输出 (stderr) 最后几行:\n{stderr_tail}\n"
 
-    print(f"\n任务已结束, 正在发送邮件...")
+    print("\n任务已结束, 正在发送邮件...")
 
     send_email_core(subject, body)
 
 
 def run_and_watch(command):
-    print(f"=== 任务启动 ===")
+    print("=== 任务启动 ===")
     print(f"执行命令: {command}\n")
     start_time = datetime.now()
 
