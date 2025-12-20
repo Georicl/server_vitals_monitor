@@ -189,3 +189,6 @@ server-vitals-monitor/
 │       └── install_cli.py   # CLI Installer / 命令行安装器
 └── install.py               # Main Installer / 主安装入口
 ```
+
+> If you are interested in pointing out errors in my code or suggesting improvements and additions, please contact me.  
+> Georicl georicl@outlook.com
