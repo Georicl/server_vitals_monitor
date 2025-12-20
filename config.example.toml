@@ -1,0 +1,27 @@
+[monitor]
+# Interval in seconds
+interval = 60
+
+# Retention days
+retention_days = 30
+
+[thresholds]
+# Thresholds for each metric
+
+cpu_warning_percent = 50.0   
+memory_warning_percent = 70.0 
+
+[email]
+# Email settings
+
+# Enable email
+enabled = true
+
+# SMTP server settings
+smtp_server = "smtp.gmail.com"
+smtp_port = 587
+
+sender_email = "your_email@gmail.com"
+sender_password = "your_app_password_here"
+
+receiver_email = "receiver@example.com"

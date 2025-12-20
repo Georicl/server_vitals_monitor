@@ -13,3 +13,4 @@ server_logs.csv
 *.DS_Store
 __pycache__/
 .Rhistory
+config.json

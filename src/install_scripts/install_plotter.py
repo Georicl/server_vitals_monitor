@@ -5,7 +5,7 @@ import subprocess
 
 SERVICE_NAME = "vitals_plot.service"
 TIMER_NAME = "vitals_plot.timer"
-SCRIPT_REL_PATH = "src/server_monitor/plot_daily.py"
+SCRIPT_REL_PATH = "src/server_monitor/daily_job.py"
 
 def install_timer():
     print("=== Server Vitals Plotter Install===")
