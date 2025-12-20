@@ -37,9 +37,10 @@ def main():
     if not run_installer("install_plotter.py"):
         sys.exit(1)
         
-    # 安装邮件服务
-    # run_installer("install_reporter.py")
-
+    print("Installing CLI Shortcuts...")
+    if not run_installer("install_cli.py"):
+        print("Error installing CLI shortcuts.")
+        
     print("All done!")
 
 if __name__ == "__main__":
