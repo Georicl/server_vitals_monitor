@@ -4,14 +4,13 @@ import subprocess
 import time
 import argparse
 from datetime import datetime
+from server_monitor.reporter import send_email_core 
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.abspath(os.path.join(CURRENT_DIR, "../../"))
 
 if os.path.join(PROJECT_ROOT, "src") not in sys.path:
     sys.path.append(os.path.join(PROJECT_ROOT, "src"))
-
-from server_monitor.reporter import send_email_core # noqa: E402
 
 def finish_notice(command, exit_code, start_time, end_time, stdout_tail=None, stderr_tail=None):
     
