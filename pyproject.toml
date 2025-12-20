@@ -5,3 +5,17 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = []
+
+[dependency-groups]
+dev = [
+    "commitizen>=4.10.1",
+]
+
+[tool.commitizen]
+name = "cz_conventional"
+version = "1.0.0"
+tag_format = "v$version"
+version_files = [
+    "pyproject.toml:version",
+    "src/server_monitor/__init__.py:__version__" # 如果你有这个文件
+]
