@@ -1,0 +1,42 @@
+name: CI Check
+
+# 有人 Push 代码到 main 或 develop 分支时
+# 有人提交 Pull Request 到 main 或 develop 时
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  quality-check:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 拉取
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # 安装 uv 
+    - name: Install uv
+      uses: astral-sh/setup-uv@v4
+
+    - name: Set up Python 3.13
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.13"
+
+    # 安装依赖
+    - name: Install dependencies
+      run: |
+        uv sync --all-extras --dev
+
+    # 代码静态检查 (Linting)
+    - name: Lint with Ruff
+      run: |
+        uv run ruff check .
+
+    # 运行自动化测试
+    - name: Run Tests
+      run: |
+        uv run pytest
