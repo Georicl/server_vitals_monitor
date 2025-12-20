@@ -2,38 +2,11 @@ import smtplib
 import psutil
 import os
 from email.message import EmailMessage
-from datetime import datetime
+# 引入必要的配置加载器 (保持你原有的引用方式)
 from .config_loader import load_config, get_config_value
 
-def get_top_processes(n=3):
-    processes = []
 
-    for proc in psutil.process_iter(['pid', 'name', 'username', 'cpu_percent', 'memory_percent']):
-        try:
-            p_info = proc.info
-            if not p_info['username']:
-                p_info['username'] = "?"
-            processes.append(p_info)
-        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
-            pass
-
-    sorted_processes = sorted(processes, key=lambda x: x['memory_percent'], reverse=True)[:n]
-
-    report_str = "\n[当前内存占用 Top 3 进程]\n"
-    report_str += f"{'PID':<8} {'用户':<10} {'MEM%':<8} {'进程名'}\n"
-    report_str += "-" * 50 + "\n"
-
-    for p in sorted_processes:
-        # 防止 None 报错
-        mem_val = round(p.get('memory_percent') or 0, 1)
-        pid = p.get('pid')
-        user = p.get('username')
-        name = p.get('name')
-        report_str += f"{pid:<8} {user:<10} {mem_val:<8} {name}\n"
-
-    return report_str
-
-def send_daily_report(date_str, attachment_path=None):
+def send_email_core(subject, body, attachment_path=None):
     config = load_config()
 
     if not get_config_value(config, "email", "enabled", False):
@@ -53,37 +26,10 @@ def send_daily_report(date_str, attachment_path=None):
     print(f"email to {receiver}")
 
     msg = EmailMessage()
-    msg['Subject'] = f"[{date_str}] 服务器运行日报 - Server Vitals"
+    msg['Subject'] = subject
     msg['From'] = sender
     msg['To'] = receiver
 
-    cpu_now = psutil.cpu_percent(interval=1)
-    mem_now = psutil.virtual_memory().percent
-
-    thresholds = config.get("thresholds", {})
-    # 默认值50,70
-    cpu_warn = thresholds.get("cpu_warning_percent", 50)
-    mem_warn = thresholds.get("memory_warning_percent", 70)
-
-    status_str = "正常运行"
-
-    if cpu_now > cpu_warn or mem_now > mem_warn:
-        status_str = "高负载"
-
-    top_procs = get_top_processes()
-
-    body = f"""
-这是 {date_str} 的服务器运行日报。
-附件中包含了详细的 CPU 和内存波动图表。
-
-[当前系统状态] {status_str}
-CPU 使用率: {cpu_now}%
-内存使用率: {mem_now}%
-
-{top_procs}
-
-此邮件由 Server Vitals Monitor 自动生成。
-"""
     msg.set_content(body)
 
     # 添加附件，配合PNG图发送
@@ -113,3 +59,69 @@ CPU 使用率: {cpu_now}%
         print(f"邮件已发送到 {receiver}")
     except Exception as e:
         print(f"邮件发送失败: {e}")
+
+def get_top_processes(n=3):
+    """
+    日报生成
+    """
+    processes = []
+
+    for proc in psutil.process_iter(['pid', 'name', 'username', 'cpu_percent', 'memory_percent']):
+        try:
+            p_info = proc.info
+            if not p_info['username']: p_info['username'] = "?"
+            processes.append(p_info)
+        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+            pass
+
+    sorted_processes = sorted(processes, key=lambda x: x['memory_percent'], reverse=True)[:n]
+
+    report_str = "\n[当前内存占用 Top 3 进程]\n"
+    report_str += f"{'PID':<8} {'用户':<10} {'MEM%':<8} {'进程名'}\n"
+    report_str += "-" * 50 + "\n"
+
+    for p in sorted_processes:
+        # 防止 None 报错
+        mem_val = round(p.get('memory_percent') or 0, 1)
+        pid = p.get('pid')
+        user = p.get('username')
+        name = p.get('name')
+        report_str += f"{pid:<8} {user:<10} {mem_val:<8} {name}\n"
+
+    return report_str
+
+def send_daily_report(date_str, attachment_path=None):
+    """
+    发送日报
+    """
+    config = load_config()
+    if not get_config_value(config, "email", "enabled", False):
+        return
+    
+    cpu_now = psutil.cpu_percent(interval=1)
+    mem_now = psutil.virtual_memory().percent
+    top_procs = get_top_processes()
+
+    thresholds = config.get("thresholds", {})
+    cpu_warn = thresholds.get("cpu_warning_percent", 50)
+    mem_warn = thresholds.get("memory_warning_percent", 70)
+    status_str = "正常运行"
+    if cpu_now > cpu_warn or mem_now > mem_warn:
+        status_str = "高负载"
+    
+    body = f"""
+这是 {date_str} 的服务器运行日报。
+附件中包含了详细的 CPU 和内存波动图表。
+
+[当前系统状态] {status_str}
+CPU 使用率: {cpu_now}%
+内存使用率: {mem_now}%
+
+{top_procs}
+
+此邮件由 Server Vitals Monitor 自动生成。
+"""
+    
+    # 发送邮件
+    subject = f"[{date_str}] 服务器运行日报 - Server Vitals"
+    send_email_core(subject, body, attachment_path)
