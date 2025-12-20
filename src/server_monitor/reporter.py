@@ -11,6 +11,8 @@ def get_top_processes(n=3):
     for proc in psutil.process_iter(['pid', 'name', 'username', 'cpu_percent', 'memory_percent']):
         try:
             p_info = proc.info
+            if not p_info['username']:
+                p_info['username'] = "?"
             processes.append(p_info)
         except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
             pass
@@ -20,6 +22,14 @@ def get_top_processes(n=3):
     report_str = "\n[当前内存占用 Top 3 进程]\n"
     report_str += f"{'PID':<8} {'用户':<10} {'MEM%':<8} {'进程名'}\n"
     report_str += "-" * 50 + "\n"
+
+    for p in sorted_processes:
+        # 防止 None 报错
+        mem_val = round(p.get('memory_percent') or 0, 1)
+        pid = p.get('pid')
+        user = p.get('username')
+        name = p.get('name')
+        report_str += f"{pid:<8} {user:<10} {mem_val:<8} {name}\n"
 
     return report_str
 
