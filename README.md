@@ -190,4 +190,5 @@ server-vitals-monitor/
 └── install.py               # Main Installer / 主安装入口
 ```
 
-# 如果你喜欢这个项目，请将使用中遇到的问题联系我!
+> If you are interested in pointing out errors in my code or suggesting improvements and additions, please contact me.  
+> Georicl georicl@outlook.com
