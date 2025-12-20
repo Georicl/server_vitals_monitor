@@ -89,10 +89,17 @@ CPU 使用率: {cpu_now}%
         print(f"无附件，将发送纯文字邮件")
 
     try:
-        with smtplib.SMTP(smtp_server, smtp_port) as server:
-            server.starttls() 
-            server.login(sender, password)
-            server.send_message(msg)
-            print(f"邮件已发送到 {receiver}")
+        # 如果端口是 465，使用 SMTP_SSL (专用于 163/QQ 等国内邮箱)
+        if smtp_port == 465:
+            with smtplib.SMTP_SSL(smtp_server, smtp_port) as server:
+                server.login(sender, password)
+                server.send_message(msg)
+        else:
+            with smtplib.SMTP(smtp_server, smtp_port) as server:
+                server.starttls() 
+                server.login(sender, password)
+                server.send_message(msg)
+                
+        print(f"邮件已发送到 {receiver}")
     except Exception as e:
         print(f"邮件发送失败: {e}")
