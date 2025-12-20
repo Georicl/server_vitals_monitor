@@ -60,7 +60,7 @@ def send_email_core(subject, body, attachment_path=None):
     except Exception as e:
         print(f"邮件发送失败: {e}")
 
-def get_top_processes(n=3):
+def get_top_processes(n=5):
     """
     日报生成
     """
@@ -76,7 +76,7 @@ def get_top_processes(n=3):
 
     sorted_processes = sorted(processes, key=lambda x: x['memory_percent'], reverse=True)[:n]
 
-    report_str = "\n[当前内存占用 Top 3 进程]\n"
+    report_str = "\n[当前内存占用 Top 5 进程]\n"
     report_str += f"{'PID':<8} {'用户':<10} {'MEM%':<8} {'进程名'}\n"
     report_str += "-" * 50 + "\n"
 

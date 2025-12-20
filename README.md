@@ -14,8 +14,8 @@
     * **数据持久化**：按天自动切割日志，防止文件无限膨胀。
 * **Visual Reports**: Generates trend charts (PNG/PDF) for the past 24 hours.
     * **可视化报表**：生成过去 24 小时的趋势图（PNG/PDF）。
-* **Smart Alerts**: Sends daily emails with resource usage summaries and Top 3 resource-consuming processes.
-    * **智能通知**：发送包含资源使用摘要和资源占用前三名进程的每日邮件。
+* **Smart Alerts**: Sends daily emails with resource usage summaries and Top 5 resource-consuming processes.
+    * **智能通知**：发送包含资源使用摘要和资源占用前五名进程的每日邮件。
 * **Dual Mode Support**: Supports both modern Systemd (recommended) and traditional Crontab (for restricted environments) deployment.
     * **双模式支持**：支持现代 Systemd（推荐）和传统 Crontab（适用于受限环境）部署。
 * **Privacy First**: Configuration is separated via `config.toml`, keeping sensitive credentials safe.
