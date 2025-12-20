@@ -6,11 +6,12 @@ import stat
 COMMAND_NAME = "task_guard"
 SCRIPT_REL_PATH = "src/server_monitor/task_guard.py"
 
+
 def install_cli_tool():
     print("=== Installing CLI task guard ===")
 
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    project_root = os.path.abspath(os.path.join(current_dir, "../../"))   
+    project_root = os.path.abspath(os.path.join(current_dir, "../../"))
     target_script = os.path.join(project_root, SCRIPT_REL_PATH)
     python_exe = sys.executable
 
@@ -39,18 +40,23 @@ exec "{python_exe}" "{target_script}" "$@"
 
         print(f"generated short cut command: {dest_path}")
         print("-" * 40)
-        print(f"Usage: nohup {COMMAND_NAME} \"your_command\" &")
+        print(f'Usage: nohup {COMMAND_NAME} "your_command" &')
         print("-" * 40)
 
         # check PATH
         if bin_dir not in os.environ["PATH"]:
-            print(f"    notice: {bin_dir} does not exist in $PATH environment variable.")
-            print("   Please run the following command (or add to .zshrc / .bashrc) to make it effective:")
-            print(f"   export PATH=$HOME/bin:$PATH")
+            print(
+                f"    notice: {bin_dir} does not exist in $PATH environment variable."
+            )
+            print(
+                "   Please run the following command (or add to .zshrc / .bashrc) to make it effective:"
+            )
+            print("   export PATH=$HOME/bin:$PATH")
     except Exception as e:
         print(f"Error: {e}")
         return False
-    
+
+
 def add_path_to_shell_config(bin_dir):
     home = os.path.expanduser("~")
     shell = os.environ.get("SHELL", "")
@@ -83,7 +89,7 @@ def add_path_to_shell_config(bin_dir):
     if bin_dir in content:
         print(f"{bin_dir} had in {config_file}")
         return True, config_file
-    
+
     # add PATH
     try:
         with open(config_file, "a") as f:
@@ -93,6 +99,7 @@ def add_path_to_shell_config(bin_dir):
     except Exception as e:
         print(f"error: {e}")
         return False, config_file
+
 
 if __name__ == "__main__":
     install_cli_tool()
