@@ -27,7 +27,6 @@ def run_installer(script_name):
         print(f"Error: {e}")
         return False
 
-
 def main():
     print("=== Server Vitals Monitor Starter===")
 
@@ -51,10 +50,6 @@ def main():
     print("Installing Plotter Service...")
     if not run_installer("install_plotter.py"):
         sys.exit(1)
-
-    print("Installing CLI Shortcuts...")
-    if not run_installer("install_cli.py"):
-        print("Error installing CLI shortcuts.")
 
     print("All done!")
 
