@@ -10,6 +10,11 @@ dependencies = [
     "psutil>=7.1.3",
 ]
 
+[project.scripts]
+server-monitor = "server_monitor.monitor:main"
+task-guard = "server_monitor.task_guard:main"
+daily-report = "server_monitor.daily_job:main"
+
 [dependency-groups]
 dev = [
     "commitizen>=4.10.1",

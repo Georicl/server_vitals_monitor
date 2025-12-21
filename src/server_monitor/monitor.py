@@ -60,7 +60,7 @@ def signal_handler(sig, frame):
     sys.exit(0)
 
 
-if __name__ == "__main__":
+def main():
     signal.signal(signal.SIGINT, signal_handler)
 
     print("=== Server Vitals Monitor Start ===")
@@ -75,3 +75,6 @@ if __name__ == "__main__":
             log_metrics()
         except KeyboardInterrupt:
             break
+
+if __name__ == "__main__":
+    main()

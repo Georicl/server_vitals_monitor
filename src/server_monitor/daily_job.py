@@ -24,7 +24,8 @@ def run_daily_job(target_date):
 
     print("=== [Daily Job] 执行结束 ===")
 
-if __name__ == "__main__":
+
+def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--date', type=str, help='指定日期 (YYYY-MM-DD)')
     parser.add_argument('--yesterday', action='store_true', help='自动处理昨天的数据')
@@ -39,3 +40,6 @@ if __name__ == "__main__":
         target = (datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')
         
     run_daily_job(target)
+
+if __name__ == "__main__":
+    main()
