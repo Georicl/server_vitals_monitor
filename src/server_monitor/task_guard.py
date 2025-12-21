@@ -64,10 +64,13 @@ def run_and_watch(command):
 
     sys.exit(exit_code)
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(description="运行命令并在结束后发送邮件通知")
     parser.add_argument("command", type=str, help="要运行的完整命令，用引号包起来，例如 'sleep 5'")
     
     args = parser.parse_args()
     
     run_and_watch(args.command)
+
+if __name__ == "__main__":
+    main()

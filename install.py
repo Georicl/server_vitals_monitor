@@ -27,10 +27,20 @@ def run_installer(script_name):
         print(f"Error: {e}")
         return False
 
-
 def main():
     print("=== Server Vitals Monitor Starter===")
 
+    print("\n[1/3] Installing package and CLI tools...")
+
+    try:
+        subprocess.run(["uv", "pip", "install", "-e", "."], check=True)
+    except FileNotFoundError:
+        subprocess.run([sys.executable, "-m", "pip", "install", "-e", "."], check=True)
+    except subprocess.CalledProcessError:
+        print("❌ Package installation failed.")
+        sys.exit(1)
+
+    print(" CLI tools installed (task-guard, server-monitor)")
     # 安装监控服务
     print("Installing Monitor Service...")
     if not run_installer("install_monitor.py"):
@@ -40,10 +50,6 @@ def main():
     print("Installing Plotter Service...")
     if not run_installer("install_plotter.py"):
         sys.exit(1)
-
-    print("Installing CLI Shortcuts...")
-    if not run_installer("install_cli.py"):
-        print("Error installing CLI shortcuts.")
 
     print("All done!")
 

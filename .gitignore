@@ -1,15 +1,47 @@
-# Python-generated files
+# ========================
+# Python 编译与运行缓存
+# ========================
 __pycache__/
 *.py[oc]
+*.pyo
+
+# ========================
+# 构建与分发 (pip install 生成的文件)
+# ========================
 build/
 dist/
 wheels/
-*.egg-info
+*.egg-info/
+.eggs/
 
-# Virtual environments
-.venv
+# ========================
+# 虚拟环境
+# ========================
+.venv/
+venv/
+ENV/
 
+# ========================
+# 工具缓存 (Ruff, Pytest, MyPy)
+# ========================
+.ruff_cache/
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# ========================
+# 项目特定文件
+# ========================
+# 敏感配置
+config.json
+# 本地测试数据
+data/
+# 临时日志
+*.log
+
+# ========================
+# 系统文件
+# ========================
 *.DS_Store
 .Rhistory
-config.json
-data/
