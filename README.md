@@ -169,6 +169,14 @@ crontab -e
 # (Delete the relevant lines / 删除相关行)
 ```
 
+## Install Task Guard Manually(手动安装进程守护)
+
+If you can not install task guard by `install.py`, try this:  
+如果你无法使用install.py安装 task guard, 可以使用以下方式手动安装:  
+```bash
+python3 src/install_scripts/install_cli.py
+```  
+
 # 📂 Project Structure (项目结构)
 
 ```PlainText
